@@ -1,0 +1,59 @@
+1. program to perform addition of 8-bit data using assembly language
+
+org 100h              
+num1 db 15h           
+num2 db 12h           
+start:
+    mov al, [num1]    
+    add al, [num2]    
+    mov ah, al        
+    shr ah, 4         
+    add ah, '0'      
+    mov dl, ah        
+    mov ah, 02h       
+    int 21h          
+    and al, 0Fh      
+    add al, '0'       
+    mov dl, al        
+    mov ah, 02h       
+    int 21h           
+    mov ah, 4Ch       
+    int 21h           
+
+
+
+2. program to perform addition of 16-bit data in assembly language
+
+
+org 100h
+NUM1 DW 1234h   
+NUM2 DW 5678h  
+start:
+    MOV AX, [NUM1]  
+    ADD AX, [NUM2]  
+    MOV BL, AH      
+    CALL PRINT_HEX_BYTE 
+    MOV BL, AL      
+    CALL PRINT_HEX_BYTE 
+    MOV AH, 4Ch
+    INT 21h
+PRINT_HEX_BYTE:
+    PUSH AX         
+    MOV AL, BL      
+    SHR AL, 4       
+    CALL PRINT_HEX_DIGIT
+    MOV AL, BL      
+    AND AL, 0Fh     
+    CALL PRINT_HEX_DIGIT
+    POP AX          
+    RET
+PRINT_HEX_DIGIT:
+    ADD AL, '0'    
+    CMP AL, '9'     
+    JLE PRINT_CHAR
+    ADD AL, 7       
+PRINT_CHAR:
+    MOV DL, AL      
+    MOV AH, 02h     
+    INT 21h
+    RET
